@@ -97,11 +97,11 @@ Now that the reconstruction has converged to a solution, the pulse has now been 
 # Data
 There are two folders in here with two different experiments.
 # FROG Folder
-This was the first FROG spectrogram taken from our 1030 nm, 40 W Carbide laser and the one I demonstrated in the presentation.
+This was the first FROG spectrogram taken from our 1030 nm, 40 W Carbide laser and the one was demonstrated in the presentation.
 
 # Rep_Rate Folder
 This folder contains different experiments where we systematically changed the speed of the pulses from 1MHz( 1 μs) to 250 kHz (4 μs) part of the laser and recorded the change in the spectrograms.
-What is rather remarkable is that no matter how bad the noise was in these experiments the algorithim always converged to a solution.
+What is rather remarkable is that no matter how bad the single to noise was in these experiments the algorithim always converged to a solution.
 
 
 ### References
