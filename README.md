@@ -1,8 +1,8 @@
 # Physics-5070-Final-Project-FROG
 # Background
-In the study of ultrafast optics and lasers and there utilization requires a pulse that is on the femtosecond time scale which is used to study ultrafast carrier dynamics and quantum phenomena. The pulse contains frequency and phase information that when used in population dynamics can be interpreted in a physical way. However, as pulses propagate through optical components (lenses, windows, fibers, etc.), they acquire a frequency-dependent phase $$\( \phi(\omega) \)$$. This results in dispersion and chirp, where different frequency components of the pulse are delayed relative to one another. Chirp leads to temporal broadening and distortion of the pulse, which can strongly affect time-resolved measurements occurring on comparable timescales.
+In the study of ultrafast optics and lasers and there utilization requires a pulse that is on the femtosecond time scale which is used to study ultrafast carrier dynamics and quantum phenomena. The pulse contains frequency and phase information that when used in population dynamics can be interpreted in a physical way. However, as pulses propagate through optical components (lenses, windows, fibers, etc.), they acquire a frequency-dependent phase $$\( \phi(\omega) \)$$. This results in dispersion and chirp, where different frequency components of the pulse are delayed relative to one another. Chirp, which is an instanteous change in phase $$\omega_{\text{inst}}(t) = \frac{d\phi(t)}{dt}$$, leads to temporal broadening and distortion of the pulse, which can strongly affect time-resolved measurements occurring on comparable timescales.
 
-Since most optical photodectors only record the intensity $$ I(t) \propto |E(t)|^2$$,  and then the phase of the electric field $$\( E(t) \)$$ is not directly accessible. This leads to a phase retrival problem, where the full optical field cannot be reconstructed from intensity measurements alone. To overcome the pase retevial problem we use Frequency Resoled Optical Gating (FROG) to reconstruct both amplitude and phase of the pulse. 
+Since most optical photodectors only record the intensity $$I(t) \propto |E(t)|^2$$,  and then the phase of the electric field $$\( E(t) \)$$ is not directly accessible. This leads to a phase retrival problem, where the full optical field cannot be reconstructed from intensity measurements alone. To overcome the pase retevial problem we use Frequency Resoled Optical Gating (FROG) to reconstruct both amplitude and phase of the pulse. 
 
 
 ## Frequency-Resolved Optical Gating (FROG)
@@ -56,35 +56,44 @@ For our general purposes and for the low noise data that aquired, we will focus 
 
 <img width="1001" height="626" alt="image" src="https://github.com/user-attachments/assets/4d119bc2-b128-4571-bf76-a8604d11c55c" />
 
-The GP algorithm is an iterative process that alternates between the experimental constraint(i.e. the measured spectrogram) and the physical constraint(i.e the SHG process). For low-noise data, it provides a reliable and mathematically rigorous way to "undo" the integration and extract the complex field .
+The GP algorithm is an iterative process that alternates between the experimental constraint(i.e. the measured spectrogram) and the physical constraint(i.e the SHG process). For low-noise data, it provides a reliable and mathematically rigorous way to extract the complex field .
 
 ### The Iterative Loop
 Based on the generalized projections flowchart, the algorithm cycles through the following steps to reconstruct the pulse.
 
 1. The process begins with an initial electric field $E(t)$. While one can "start with noise," using a guess based on the FWHM of the intensity autocorrelation provides a much faster path to convergence.
 2. The algorithm calculates the current signal field based on the specific nonlinear process and in our case SHG, $$E_{sig}(t, \tau) = E(t)E(t-\tau)$$
-3. The signal field is transformed from the time domain to the frequency domain via a Fast Fourier Transform (FFT) with respect to $t$ result in $$\tilde{E}_{sig}(\omega, \tau) = \mathcal{F}\{E_{sig}(t, \tau)\}$$
-4. We then apply a constraint on the measured data in the frequency domain. The algorithm takes the calculated spectral field and replaces its magnitude with the square root of the measured FROG trace, while the calculated phase is kept. This results in $$\tilde{E}'_{sig}(\omega, \tau) = \sqrt{I_{FROG}(\omega, \tau)} \exp(i\phi_{calc})$$.
-5. The data-corrected field is transformed back into the time domain using an Inverse FFT with respect to $\omega$ to obtain an updated $E'_{sig}(t, \tau)$.
-6. We then apply a physical constriant in the time domain. The algorithm finds a new $E(t)$ that minimizes the functional distance (is "as close as possible") to the modified signal field while strictly obeying the nonlinear optical process and selection rules (SHG).
+3. The signal field is transformed from the time domain to the frequency domain via a Fast Fourier Transform (FFT) with respect to $t$ result in $$\tilde{E}_{sig}(\omega, \tau)$$.
+4. We then apply a constraint on the measured data in the frequency domain. The algorithm takes the calculated spectral field and replaces its magnitude with the square root of the measured FROG trace, while the calculated phase is kept. This results in $$\tilde{E}_{sig}(\omega, \tau)$$.
+5. The data-corrected field is transformed back into the time domain using an Inverse FFT with respect to $\omega$ to obtain an updated $$E'_{sig}(t, \tau)$$.
+6. We then apply a physical constriant in the time domain. The algorithm finds a new $$E(t)$$ that minimizes the functional distance to the modified signal field while strictly obeying the nonlinear optical process and selection rules (SHG).
 
 As mentioned before there are physical and experimental constraints. Below is a desciption of why these constraints must be upheld. 
 * The physical constraint represents the physics. It ensures the signal field remains physically possible according to the specific nonlinear interaction (e.g., SHG) occurring in the crystal.
 * The experimental constraint presents the experimental reality. Since spectrometers are "phase-blind," this step injects the measured intensity while allowing the algorithm to iteratively refine the unknown phase.
 
 ### Convergence and the "FROG Error"
-The algorithm repeats this loop until the **FROG Error ($G$)** reaches a minimum threshold. This error represents the Root Mean Square (RMS) difference between the measured and reconstructed traces:
 
-$$G = \sqrt{\frac{1}{N_\omega N_\tau} \sum_{\omega, \tau} \left| I_{meas}(\omega, \tau) - I_{recon}(\omega, \tau) \right|^2}$$
+<img width="1955" height="577" alt="image" src="https://github.com/user-attachments/assets/f9c63605-1b19-49f2-8dfa-704b4a00b8c6" />
 
-For experimental data with low noise, a $G$ value below **1%** (0.01) is generally considered a successful and converged reconstruction.
+To determine if the reconstruction is accurate, the algorithm monitors two primary error metrics. While $G$ tracks the overall fit, $Z$ ensures the experimental physics are consistent.
+The algorithm repeats this loop until the FROG Error ($$G$$) reaches a minimum threshold. This error represents the Root Mean Square (RMS) difference between the measured and reconstructed traces, 
 
-### Convergence and the "FROG Error"
-The algorithm repeats this loop until the **FROG Error ($G$)** reaches a minimum threshold. This error represents the Root Mean Square (RMS) difference between the measured and reconstructed traces:
+$$G = \sqrt{\frac{1}{N_\omega N_\tau} \sum_{\omega, \tau} \left| I_{meas}(\omega, \tau) - I_{recon}(\omega, \tau) \right|^2}$$.
 
-$$G = \sqrt{\frac{1}{N_\omega N_\tau} \sum_{\omega, \tau} \left| I_{meas}(\omega, \tau) - I_{recon}(\omega, \tau) \right|^2}$$
+For experimental data with low noise, a $G$ value below 1% is generally considered a successful and converged reconstruction.
 
-For experimental data with low noise, a $G$ value below **1%** is generally considered a successful and "converged" reconstruction.
+The $Z$-error on the other hand  focuses on the integrated frequency marginals. It calculates the difference between the total energy measured at each frequency (integrated over all delays) versus the energy in the reconstructed trace, the z-error is given by
+$$Z = \sqrt{\sum_{\omega} \left| \int I_{meas}(\omega, \tau) d\tau - \int I_{recon}(\omega, \tau) d\tau \right|^2}$$.
+
+By tracking both the $G$ and $Z$ error allows us to distinguish between random noise and systematic experimental flaw.
+If $Z$ error is large but the $G$ error remains small usually indicates systematic errors, such as bandwidth clipping (due to a thick SHG crystal) or poor spectrometer calibration. The algorithm is finding a mathematical solution that "fits" the pixels but violates the physical energy distribution.
+If $Z$ and $G$ error is small, then this indicates a high-fidelity reconstruction where the retrieved pulse accurately represents the physical laser pulse.
+
+### The retrived pulse
+<img width="1136" height="705" alt="image" src="https://github.com/user-attachments/assets/aa4f82ed-afe5-40a7-9e1a-b4705e6e961f" />
+Now that the reconstruction has converged to a solution, the pulse has now been effectively rebuilt with its phase. For instance in the retrieved pulse plot, we can now see that we have a parabolic phase, $$\phi \propto t^2$$ meaning that we have a linear chirp. 
+
 # Data
 There are two folders in here with two different experiments.
 # FROG Folder
@@ -96,4 +105,11 @@ What is rather remarkable is that no matter how bad the noise was in these exper
 
 
 ### References
+*  R. Trebino *et al.*, *Measuring ultrashort laser pulses in the time–frequency domain using frequency-resolved optical gating*,  
+  Rev. Sci. Instrum. **68**, 3277 (1997). https://doi.org/10.1063/1.1148286
+*  D. J. Kane and R. Trebino, *Characterization of arbitrary femtosecond pulses using frequency-resolved optical gating*,  
+  IEEE J. Quantum Electron. **29**, 571 (1993).  https://doi.org/10.1109/3.199311
+* R. Trebino, *Frequency-Resolved Optical Gating: The Measurement of Ultrashort Laser Pulses*,  
+  Springer (2000). https://link.springer.com/book/10.1007/978-1-4615-1181-6
+* K. W. DeLong *et al.*, *Practical middle-way algorithms for achieving the optimal pulse retrieval in frequency-resolved optical gating*, IEEE J. Quantum Electron. **32**, 1253 (1996). https://doi.org/10.1109/3.517026
 * For more information on FROG principles and variations, see [Swamp Optics - FROG](https://www.swampoptics.com/frog.html).
