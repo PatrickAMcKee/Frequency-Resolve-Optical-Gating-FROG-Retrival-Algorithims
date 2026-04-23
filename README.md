@@ -92,7 +92,7 @@ If $Z$ and $G$ error is small, then this indicates a high-fidelity reconstructio
 
 ### The retrived pulse
 <img width="1136" height="705" alt="image" src="https://github.com/user-attachments/assets/aa4f82ed-afe5-40a7-9e1a-b4705e6e961f" />
-Now that the reconstruction has converged to a solution, the pulse has now been effectively rebuilt with its phase. For instance in the retrieved pulse plot, we can now see that we have a parabolic phase, $$\phi \propto t^2$$ meaning that we have a linear chirp. 
+Now that the reconstruction has converged to a solution, the pulse has now been effectively rebuilt with its phase. For instance in the retrieved pulse plot, we can now see that we have a parabolic phase, $\phi \propto t^2$ meaning that we have a linear chirp. 
 
 # Data
 There are two folders in here with two different experiments.
