@@ -116,7 +116,7 @@ This code is the working demonstration of the algorithim on actual measured data
 # Data
 There are two folders in here with two different experiments.
 # FROG Folder
-This was the first FROG spectrogram taken from our 1030 nm, 40 W Carbide laser and the one was demonstrated in the presentation.
+This was the first FROG spectrogram taken from our 1030 nm, 40 W Carbide laser and the one that was demonstrated in the presentation.
 
 # Rep_Rate Folder
 This folder contains different experiments where we systematically changed the speed of the pulses from 1MHz( 1 μs) to 250 kHz (4 μs) part of the laser and recorded the change in the spectrograms.
