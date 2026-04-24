@@ -94,6 +94,25 @@ If $Z$ and $G$ error is small, then this indicates a high-fidelity reconstructio
 <img width="1136" height="705" alt="image" src="https://github.com/user-attachments/assets/aa4f82ed-afe5-40a7-9e1a-b4705e6e961f" />
 Now that the reconstruction has converged to a solution, the pulse has now been effectively rebuilt with its phase. For instance in the retrieved pulse plot, we can now see that we have a parabolic phase, $\phi \propto t^2$ meaning that we have a linear chirp. 
 
+### The Code
+
+# frog_benchmark.ipynb 
+The primary goal of this notebook is to provide a verification of our approach. Since as established it is impossible to know the true phase of a physical pulse. This tool generates a synthetic, mathematically defined pulse, which in the simulation is a guassian pulse $$E(t) = A exp(-t^2/(2 \sigma^2) exp(iphi(t))$$ where $$\phi(t) = \phi_{o} + \phi t + 1/2 \phi t^2$$ is related to the different orders of dispersion. The first term $$\phi_{o}$$ is the carrier-envelope phase, this is arbituary and can be 0 for our purposes, the second term $$\phi t$$ is a frequency shift, $$\phi t^2$$ is the linear chirp. We assume a linear chirp for simplicity. Now, we can generate this pulse with a known phase as way to benchmark and verify the accuarcy of the retrieval algorithim. 
+
+For the simulation the pulse duration of 150 fs was choosen as that is a typical pulse duration for most ultrafast laser and we centered the pulse at 515 nm as that is the common SHG wavelength for a 1030 nm source. Following the iterative algorithim as described above and minimized both the G and Z errors.
+
+<img width="800" height="470" alt="image" src="https://github.com/user-attachments/assets/7673176c-4830-480e-9d3e-c6df1ecd1582" />
+
+The algorithm's performance is quantified by comparing the retrieved phase against the known analytic phase. It was found that the reconstructed phase and amplitude were in agreement with our known pulse. 
+
+<img width="320" height="153" alt="image" src="https://github.com/user-attachments/assets/463b62c6-38fc-45fd-a9fc-ef2b72173646" />
+
+Comparing the exact pulse duration with the retrieved was within 5%. The low error implies that the algorithim successfully retrieved pulse. 
+
+# FROG_GP_Algorithim.ipynb
+
+This code is the working demonstration of the algorithim on actual measured data. Just like the simulation the pulse was extracted with realively low Z and G error. 
+
 # Data
 There are two folders in here with two different experiments.
 # FROG Folder
