@@ -50,7 +50,7 @@ After we have measured our FROG spectrogram, we can now apply several common ret
   Minimizes global error metric directly, useful for complex pulses such as those from inteferometric FROG. 
 
 ---
-For our general purposes and for the low noise data that aquired, we will focus on the GP algorithim. 
+For our general purposes and for the low noise data that was aquired, we will focus on the GP algorithim. 
 
 ## Generalized Projections (GP)
 
