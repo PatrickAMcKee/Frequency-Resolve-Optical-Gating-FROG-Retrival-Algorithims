@@ -108,7 +108,7 @@ The algorithm's performance is quantified by comparing the retrieved phase again
 <img width="320" height="153" alt="image" src="https://github.com/user-attachments/assets/463b62c6-38fc-45fd-a9fc-ef2b72173646" />
 
 Comparing the exact pulse duration with the retrieved was within 5%. The low error implies that the algorithim successfully retrieved pulse. 
-The table shows the reslts of the simmulation, the time-bandwidth product(TBP), is the product of the spectral bandwidth(the FWHM of the pulse in the frequency domain)  and the pulse duration. There is a theoretical minmum for the TBP for gaussian and sech pulses. The theoretical minimum TBP for an chirped gaussian pulse is $$TBP = FWHM_{t-pulse} \times FWHM_{f-banwidth} = \frac{2ln2}{\pi} = 0.441$$ and a sech ~0.315. Which we can then compare with the retrieved duration and bandwidth as another way to determine if our reconstruction was successful. 
+The table shows the reslts of the simulation; where we extract both the pulse duration and laser bandwidth. The time-bandwidth product(TBP) shown in the table, is the product of the spectral bandwidth(the FWHM of the pulse in the frequency domain)  and the pulse duration. There is a theoretical minmum for the TBP for gaussian and sech pulses. The theoretical minimum TBP for an chirped gaussian pulse is $$TBP = FWHM_{t-pulse} \times FWHM_{f-banwidth} = \frac{2ln2}{\pi} = 0.441$$ and a sech ~0.315. Which we can then compare with the retrieved duration and bandwidth as another way to determine if our reconstruction was successful. 
 # FROG_GP_Algorithim.ipynb
 
 This code is the working demonstration of the algorithim on actual measured data. Just like the simulation the pulse was extracted with realively low Z and G error. 
